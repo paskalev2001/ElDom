@@ -1,0 +1,1 @@
+rootProject.name = "cscb525company2025"
