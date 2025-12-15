@@ -1,1 +1,1 @@
-rootProject.name = "cscb525company2025"
+rootProject.name = "elDom"
