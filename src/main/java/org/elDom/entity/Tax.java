@@ -1,9 +1,10 @@
 package org.elDom.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name="tax")
 public class Tax extends BaseEntity{
@@ -18,4 +19,8 @@ public class Tax extends BaseEntity{
 
     @Column(name="validFrom")
     private String validFrom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 }
