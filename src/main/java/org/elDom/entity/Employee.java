@@ -7,6 +7,24 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="employee")
 public class Employee extends BaseEntity {
-    @Column(name="name")
-    private String name;
+    @Column(name="firstName")
+    private String firstName;
+
+    @Column(name="lastname")
+    private String lastName;
+
+    @Column(name="egn")
+    private String egn;
+
+    @Column(name="phone")
+    private String phone;
+
+    @Column(name="email")
+    private String email;
+
+    @Column(name="hireDate")
+    private String hireDate;
+
+    @Column(name="active")
+    private Boolean active;
 }

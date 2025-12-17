@@ -1,7 +1,6 @@
 package org.elDom.configuration;
 
-import org.elDom.entity.Company;
-import org.elDom.entity.Employee;
+import org.elDom.entity.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -16,6 +15,11 @@ public class SessionFactoryUtil {
             Configuration configuration = new Configuration();
             configuration.addAnnotatedClass(Company.class);
             configuration.addAnnotatedClass(Employee.class);
+            configuration.addAnnotatedClass(Apartment.class);
+            configuration.addAnnotatedClass(Building.class);
+            configuration.addAnnotatedClass(Payment.class);
+            configuration.addAnnotatedClass(Pet.class);
+            configuration.addAnnotatedClass(Tax.class);
             ServiceRegistry serviceRegistry
                     = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();

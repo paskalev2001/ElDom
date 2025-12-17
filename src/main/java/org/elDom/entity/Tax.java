@@ -1,0 +1,21 @@
+package org.elDom.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="tax")
+public class Tax extends BaseEntity{
+    @Column(name="baseRatePerSqM")
+    private Double baseRatePerSqM;
+
+    @Column(name="extraPerPersonElevator")
+    private Double extraPerPersonElevator;
+
+    @Column(name="extraPerPet")
+    private Double extraPerPet;
+
+    @Column(name="validFrom")
+    private String validFrom;
+}

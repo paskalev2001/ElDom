@@ -8,6 +8,4 @@ public class Main {
         Session session = SessionFactoryUtil.getSessionFactory().openSession();
         session.close();
     }
-    //test
-
 }
