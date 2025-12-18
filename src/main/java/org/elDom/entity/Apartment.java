@@ -1,9 +1,17 @@
 package org.elDom.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="apartment")
 public class Apartment extends BaseEntity{
@@ -14,5 +22,24 @@ public class Apartment extends BaseEntity{
     private Long floor;
 
     @Column(name="area")
-    private Double area;
+    private BigDecimal area;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "buildings_id", nullable = false)  // провери името в DDL-а ти
+    private Building building;
+
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Resident> residents = new ArrayList<>();
+
+    // helper methods (силно препоръчително)
+    public void addResident(Resident r) {
+        residents.add(r);
+        r.setApartment(this);
+    }
+
+    public void removeResident(Resident r) {
+        residents.remove(r);
+        r.setApartment(null);
+    }
+
 }
