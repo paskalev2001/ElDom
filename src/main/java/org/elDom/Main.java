@@ -36,55 +36,76 @@ public class Main {
              * 2. Building + Apartment + Resident
              *    (Building задължително има Company!)
              */
-            Building building = new Building();
-            building.setAddress("Sofia, Test 1");
-            building.setCompany(company); // ВАЖНО
-
-            Apartment apartment = new Apartment();
-            apartment.setNumber("12");
-            apartment.setFloor(3L);
-            apartment.setArea(new BigDecimal("78.50"));
-
-            building.addApartment(apartment);
-
-            Resident owner = new Resident();
-            owner.setFirstName("Ivan");
-            owner.setLastName("Ivanov");
-            owner.setBirthDate(LocalDate.of(1990, 5, 10));
-            owner.setUsesElevator(true);
-            owner.setRole(ResidentRole.OWNER);
-
-            apartment.addResident(owner);
-
-            session.persist(building); // cascade => apartment + resident
+//            Building building = new Building();
+//            building.setAddress("Sofia, Test 1");
+//            building.setCompany(company); // ВАЖНО
+//
+//            Apartment apartment = new Apartment();
+//            apartment.setNumber("12");
+//            apartment.setFloor(3L);
+//            apartment.setArea(new BigDecimal("78.50"));
+//
+//            building.addApartment(apartment);
+//
+//            Resident owner = new Resident();
+//            owner.setFirstName("Ivan");
+//            owner.setLastName("Ivanov");
+//            owner.setBirthDate(LocalDate.of(1990, 5, 10));
+//            owner.setUsesElevator(true);
+//            owner.setRole(ResidentRole.OWNER);
+//
+//            apartment.addResident(owner);
+//
+//            session.persist(building); // cascade => apartment + resident
 
             /*
              * 3. Company + Employee
              */
-            Company company2 = new Company();
-            company2.setName("ServiceCo");
+//            Company company2 = new Company();
+//            company2.setName("ServiceCo");
+//
+//            Employee employee = new Employee();
+//            employee.setFirstName("Ivan");
+//            employee.setLastName("Petrov");
+//
+//            company2.addEmployee(employee);
+//
+//            session.persist(company2); // cascade => employee
+//
+//            /*
+//             * 4. Company + Building (втори пример)
+//             */
+//            Company company3 = new Company();
+//            company3.setName("FirmA");
+//
+//            Building building2 = new Building();
+//            building2.setAddress("Sofia, ul. Test 1");
+//            building2.setFloors(8L);
+//
+//            company3.addBuilding(building2);
+//
+//            session.persist(company3); // cascade => building
 
-            Employee employee = new Employee();
-            employee.setFirstName("Ivan");
-            employee.setLastName("Petrov");
-
-            company2.addEmployee(employee);
-
-            session.persist(company2); // cascade => employee
 
             /*
-             * 4. Company + Building (втори пример)
+             * 3. Building + Employee + Company
              */
-            Company company3 = new Company();
-            company3.setName("FirmA");
+            Company c = new Company();
+            c.setName("FirmA");
 
-            Building building2 = new Building();
-            building2.setAddress("Sofia, ul. Test 1");
-            building2.setFloors(8L);
+            Employee e = new Employee();
+            e.setFirstName("Maria");
+            e.setLastName("Georgieva");
+            c.addEmployee(e);
 
-            company3.addBuilding(building2);
+            Building b = new Building();
+            b.setAddress("Sofia, ul. Example 5");
 
-            session.persist(company3); // cascade => building
+            c.addBuilding(b);     // задава b.company = c
+            e.addBuilding(b);     // задава b.employee = e
+
+            session.persist(c);   // ако Company има cascade към employees и buildings => ще запише всичко
+            // ако няма cascade към buildings, добави: session.persist(b);
 
             tx.commit();
         }
