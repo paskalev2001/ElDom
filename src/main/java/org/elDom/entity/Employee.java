@@ -1,9 +1,13 @@
 package org.elDom.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="employee")
 public class Employee extends BaseEntity {
@@ -27,4 +31,8 @@ public class Employee extends BaseEntity {
 
     @Column(name="active")
     private Boolean active;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "companies_id", nullable = false) // <-- важно: точното име на колоната
+    private Company company;
 }

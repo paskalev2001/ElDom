@@ -45,5 +45,16 @@ public class Company extends BaseEntity {
         tax.setCompany(null);
     }
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees = new ArrayList<>();
 
+    public void addEmployee(Employee e) {
+        employees.add(e);
+        e.setCompany(this);
+    }
+
+    public void removeEmployee(Employee e) {
+        employees.remove(e);
+        e.setCompany(null);
+    }
 }

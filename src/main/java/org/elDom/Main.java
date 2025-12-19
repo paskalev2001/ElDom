@@ -52,6 +52,20 @@ public class Main {
             ap.addResident(owner);
 
             session.persist(b);
+
+            // Smoke Test adding company and associating with employee
+            Company c = new Company();
+            c.setName("TestCo");
+
+            Employee e1 = new Employee();
+            e1.setFirstName("Ivan");
+            e1.setLastName("Petrov");
+
+            c.addEmployee(e1);
+
+            session.persist(c); // cascade => ще запише и Employee
+
+
             tx.commit();
         }
 
