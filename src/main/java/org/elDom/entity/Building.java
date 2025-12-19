@@ -42,4 +42,8 @@ public class Building extends BaseEntity{
         apartments.remove(a);
         a.setBuilding(null);
     }
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "companies_id", nullable = false) // или company_id - според БД
+    private Company company;
 }

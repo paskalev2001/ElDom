@@ -20,27 +20,32 @@ public class Main {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
 
-            // Creating company associated with a Tax
+            /*
+             * 1. Company + Tax
+             */
             Company company = new Company();
             company.setName("TestCo");
 
             Tax tax = new Tax();
             tax.setCompany(company);
-
             company.getTaxes().add(tax);
 
-            session.persist(company); // cascade = ALL => ще запише и Tax
+            session.persist(company); // cascade => записва и Tax
 
-            // Adding a building with appartment and resident
-            Building b = new Building();
-            b.setAddress("Sofia, Test 1");
+            /*
+             * 2. Building + Apartment + Resident
+             *    (Building задължително има Company!)
+             */
+            Building building = new Building();
+            building.setAddress("Sofia, Test 1");
+            building.setCompany(company); // ВАЖНО
 
-            Apartment ap = new Apartment();
-            ap.setNumber("12");
-            ap.setFloor(3L);
-            ap.setArea(new BigDecimal("78.50"));
+            Apartment apartment = new Apartment();
+            apartment.setNumber("12");
+            apartment.setFloor(3L);
+            apartment.setArea(new BigDecimal("78.50"));
 
-            b.addApartment(ap);
+            building.addApartment(apartment);
 
             Resident owner = new Resident();
             owner.setFirstName("Ivan");
@@ -49,22 +54,37 @@ public class Main {
             owner.setUsesElevator(true);
             owner.setRole(ResidentRole.OWNER);
 
-            ap.addResident(owner);
+            apartment.addResident(owner);
 
-            session.persist(b);
+            session.persist(building); // cascade => apartment + resident
 
-            // Smoke Test adding company and associating with employee
-            Company c = new Company();
-            c.setName("TestCo");
+            /*
+             * 3. Company + Employee
+             */
+            Company company2 = new Company();
+            company2.setName("ServiceCo");
 
-            Employee e1 = new Employee();
-            e1.setFirstName("Ivan");
-            e1.setLastName("Petrov");
+            Employee employee = new Employee();
+            employee.setFirstName("Ivan");
+            employee.setLastName("Petrov");
 
-            c.addEmployee(e1);
+            company2.addEmployee(employee);
 
-            session.persist(c); // cascade => ще запише и Employee
+            session.persist(company2); // cascade => employee
 
+            /*
+             * 4. Company + Building (втори пример)
+             */
+            Company company3 = new Company();
+            company3.setName("FirmA");
+
+            Building building2 = new Building();
+            building2.setAddress("Sofia, ul. Test 1");
+            building2.setFloors(8L);
+
+            company3.addBuilding(building2);
+
+            session.persist(company3); // cascade => building
 
             tx.commit();
         }
