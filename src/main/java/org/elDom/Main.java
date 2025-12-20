@@ -88,7 +88,7 @@ public class Main {
 
 
             /*
-             * 3. Building + Employee + Company
+             * 4. Building + Employee + Company
              */
             Company c = new Company();
             c.setName("FirmA");
@@ -106,6 +106,27 @@ public class Main {
 
             session.persist(c);   // ако Company има cascade към employees и buildings => ще запише всичко
             // ако няма cascade към buildings, добави: session.persist(b);
+
+            /*
+             * 5. Apartment + Payment to existing building
+             */
+
+            Apartment ap = new Apartment();
+            ap.setNumber("15");
+            ap.setFloor(4L);
+            ap.setArea(new BigDecimal("82.00"));
+            ap.setBuilding(b); // вече съществуваща сграда
+
+            Payment payment = new Payment();
+            payment.setAmount(new BigDecimal("120.00"));
+            payment.setPaymentDate(LocalDate.now());
+            payment.setPeriodMonth(5);
+            payment.setPeriodYear(2025);
+
+            ap.addPayment(payment);
+
+            session.persist(ap); // cascade => записва и Payment
+
 
             tx.commit();
         }

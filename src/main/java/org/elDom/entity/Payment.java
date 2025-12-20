@@ -1,21 +1,32 @@
 package org.elDom.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="payment")
 public class Payment extends BaseEntity{
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
     @Column(name = "paymentDate")
-    private String paymentDate;
+    private LocalDate paymentDate;
 
     @Column(name = "periodMonth")
-    private String periodMonth;
+    private Integer periodMonth;
 
     @Column(name = "periodYear")
-    private String periodYear;
+    private Integer periodYear;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "apartments_id", nullable = false)
+    private Apartment apartment;
 }

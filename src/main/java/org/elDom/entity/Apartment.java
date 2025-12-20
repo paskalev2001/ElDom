@@ -42,4 +42,17 @@ public class Apartment extends BaseEntity{
         r.setApartment(null);
     }
 
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> payments = new ArrayList<>();
+
+    public void addPayment(Payment p) {
+        payments.add(p);
+        p.setApartment(this);
+    }
+
+    public void removePayment(Payment p) {
+        payments.remove(p);
+        p.setApartment(null);
+    }
+
 }
