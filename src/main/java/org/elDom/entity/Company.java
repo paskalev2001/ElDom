@@ -70,4 +70,7 @@ public class Company extends BaseEntity {
         buildings.remove(b);
         b.setCompany(null);
     }
+
+    @OneToMany(mappedBy = "company")
+    private List<Payment> payments = new ArrayList<>();
 }

@@ -51,4 +51,7 @@ public class Employee extends BaseEntity {
         buildings.remove(b);
         b.setEmployee(null);
     }
+
+    @OneToMany(mappedBy = "employee")
+    private List<Payment> payments = new ArrayList<>();
 }

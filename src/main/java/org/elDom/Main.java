@@ -202,6 +202,8 @@ public class Main {
             // важно: задаваме и двете връзки (NOT NULL)
             payment.setApartment(apartment);
             payment.setBuilding(building);
+            payment.setCompany(company);
+            payment.setEmployee(employee);
 
             // ако си добавил Apartment.addPayment(...) helper:
             // apartment.addPayment(payment);

@@ -33,4 +33,13 @@ public class Payment extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "buildings_id", nullable = false)   // или building_id според БД
     private Building building;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "companies_id", nullable = false) // или company_id според БД
+    private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "employees_id", nullable = false) // или employee_id според БД
+    private Employee employee;
+
 }
