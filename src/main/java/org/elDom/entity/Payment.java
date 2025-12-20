@@ -12,7 +12,12 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="payment")
+@Table(
+        name="payment",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_payment_apartment_period", columnNames = {"apartments_id", "periodYear", "periodMonth"})
+        }
+)
 public class Payment extends BaseEntity{
     @Column(name = "amount")
     private BigDecimal amount;
