@@ -1,6 +1,8 @@
 package org.elDom;
 
 import org.elDom.configuration.SessionFactoryUtil;
+import org.elDom.dao.PaymentDao;
+import org.elDom.dao.PaymentDaoHibernate;
 import org.elDom.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -214,7 +216,18 @@ public class Main {
             // Ако нямаш cascade от Apartment към Payment, persist-ни Payment отделно:
             session.persist(payment);
 
+
+            //Payment DAO smoke test
             tx.commit();
+
+            SessionFactory sf = SessionFactoryUtil.getSessionFactory();
+            PaymentDao paymentDao = new PaymentDaoHibernate(sf);
+
+            paymentDao.findByApartmentAndPeriod(1L, 2025, 12)
+                    .ifPresent(p -> System.out.println(p.getAmount()));
+
+            BigDecimal income = paymentDao.sumByCompany(1L, 2025, 12);
+            System.out.println("Company income = " + income);
         }
 
         //session.close();
