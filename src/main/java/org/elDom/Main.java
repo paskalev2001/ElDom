@@ -111,22 +111,106 @@ public class Main {
              * 5. Apartment + Payment to existing building
              */
 
-            Apartment ap = new Apartment();
-            ap.setNumber("15");
-            ap.setFloor(4L);
-            ap.setArea(new BigDecimal("82.00"));
-            ap.setBuilding(b); // вече съществуваща сграда
+//            Apartment ap = new Apartment();
+//            ap.setNumber("15");
+//            ap.setFloor(4L);
+//            ap.setArea(new BigDecimal("82.00"));
+//            ap.setBuilding(b); // вече съществуваща сграда
+//
+//            Payment payment = new Payment();
+//            payment.setAmount(new BigDecimal("120.00"));
+//            payment.setPaymentDate(LocalDate.now());
+//            payment.setPeriodMonth(5);
+//            payment.setPeriodYear(2025);
+//
+//            ap.addPayment(payment);
+////
+////            session.persist(ap); // cascade => записва и Payment
+//
+//            /*
+//             * 6. Apartment + Payment to existing building
+//             */
+//
+//            Payment p = new Payment();
+//            p.setAmount(new BigDecimal("140.00"));
+//            p.setPaymentDate(LocalDate.now());
+//            p.setPeriodMonth(6);
+//            p.setPeriodYear(2026);
+//
+//            p.setApartment(ap);  // вече имаш/създаваш апартамент
+//            p.setBuilding(b);    // същата сграда, към която е апартаментът
+//
+//            session.persist(p);
 
+            // 1) Company
+            //Company company = new Company();
+            company.setName("SmokeCo");
+            company.setEik("123456789");
+            company.setAddress("Sofia");
+            company.setPhone("0888000000");
+            company.setEmail("smoke@co.bg");
+
+            // 2) Tax -> Company
+            //Tax tax = new Tax();
+            tax.setCompany(company);
+            // ако имаш полета за такса (примерно rate), ги сетни тук
+            // tax.setBaseRate(...)
+
+            company.addTax(tax);
+
+            // 3) Employee -> Company
+            Employee employee = new Employee();
+            employee.setFirstName("Maria");
+            employee.setLastName("Georgieva");
+            employee.setActive(true);
+
+            company.addEmployee(employee);
+
+            // 4) Building -> Company + Employee
+            Building building = new Building();
+            building.setAddress("Sofia, ul. Example 5");
+            building.setFloors(8L);
+
+            company.addBuilding(building);      // задава building.company
+            employee.addBuilding(building);     // задава building.employee
+
+            // 5) Apartment -> Building
+            Apartment apartment = new Apartment();
+            apartment.setNumber("12");
+            apartment.setFloor(3L);
+            apartment.setArea(new BigDecimal("78.50"));
+
+            building.addApartment(apartment);
+
+            // 6) Resident -> Apartment
+            Resident resident = new Resident();
+            resident.setFirstName("Ivan");
+            resident.setLastName("Ivanov");
+            resident.setBirthDate(LocalDate.of(1990, 5, 10));
+            resident.setUsesElevator(true);
+            resident.setRole(ResidentRole.BOTH);
+
+            apartment.addResident(resident);
+
+            // 7) Payment -> Apartment + Building
             Payment payment = new Payment();
             payment.setAmount(new BigDecimal("120.00"));
             payment.setPaymentDate(LocalDate.now());
-            payment.setPeriodMonth(5);
+            payment.setPeriodMonth(12);
             payment.setPeriodYear(2025);
 
-            ap.addPayment(payment);
+            // важно: задаваме и двете връзки (NOT NULL)
+            payment.setApartment(apartment);
+            payment.setBuilding(building);
 
-            session.persist(ap); // cascade => записва и Payment
+            // ако си добавил Apartment.addPayment(...) helper:
+            // apartment.addPayment(payment);
 
+            // Persist най-горния root
+            session.persist(company);
+
+            // Ако нямаш cascade от Apartment към Payment, persist-ни Payment отделно:
+            session.persist(payment);
 
             tx.commit();
         }

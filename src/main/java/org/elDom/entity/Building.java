@@ -50,4 +50,17 @@ public class Building extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employees_id", nullable = false) // или employee_id според БД
     private Employee employee;
+
+    @OneToMany(mappedBy = "building")
+    private List<Payment> payments = new ArrayList<>();
+
+    public void addPayment(Payment p) {
+        payments.add(p);
+        p.setBuilding(this);
+    }
+
+    public void removePayment(Payment p) {
+        payments.remove(p);
+        p.setBuilding(null);
+    }
 }
