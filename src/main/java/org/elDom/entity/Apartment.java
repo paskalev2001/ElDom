@@ -13,7 +13,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="apartment")
+@Table(
+        name="apartment",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_apartment_building_number", columnNames = {"buildings_id", "number"})
+        }
+)
 public class Apartment extends BaseEntity{
     @Column(name="number")
     private String number;
