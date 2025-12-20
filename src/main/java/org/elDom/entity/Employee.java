@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Employee extends BaseEntity {
     private String email;
 
     @Column(name="hireDate")
-    private String hireDate;
+    private LocalDate hireDate;
 
     @Column(name="active")
     private Boolean active;
