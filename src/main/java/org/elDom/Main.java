@@ -1,10 +1,7 @@
 package org.elDom;
 
 import org.elDom.configuration.SessionFactoryUtil;
-import org.elDom.dao.BuildingDao;
-import org.elDom.dao.BuildingDaoHibernate;
-import org.elDom.dao.PaymentDao;
-import org.elDom.dao.PaymentDaoHibernate;
+import org.elDom.dao.*;
 import org.elDom.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -242,7 +239,28 @@ public class Main {
             Long bestEmployeeId = buildingDao.findEmployeeIdWithMinBuildings(1L);
             System.out.println("Min buildings employeeId = " + bestEmployeeId);
 
+            //Employee DAO smoketest
 
+            EmployeeDao employeeDao = new EmployeeDaoHibernate(SessionFactoryUtil.getSessionFactory());
+
+            Long companyId = 1L;
+            Long employeeId = 1L;
+
+            List<Employee> byName = employeeDao.findByCompanyOrderByName(companyId);
+            List<Employee> byBuildings = employeeDao.findByCompanyOrderByBuildingsCountDesc(companyId);
+
+            long cnt = employeeDao.countBuildings(employeeId);
+            System.out.println("Buildings count = " + cnt);
+
+            //Company DAO smoke test
+
+            CompanyDao companyDao = new CompanyDaoHibernate(SessionFactoryUtil.getSessionFactory());
+
+            List<Company> sorted = companyDao.findAllOrderByIncomeDesc();
+            List<Company> sortedDec = companyDao.findAllOrderByIncomeDesc(2025, 12);
+
+            BigDecimal income2 = companyDao.totalIncome(1L, 2025, 12);
+            System.out.println("Income = " + income2);
         }
 
         //session.close();
