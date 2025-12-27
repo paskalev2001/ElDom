@@ -18,7 +18,7 @@ public class Employee extends BaseEntity {
     @Column(name="firstName")
     private String firstName;
 
-    @Column(name="lastname")
+    @Column(name="lastName")
     private String lastName;
 
     @Column(name="egn")
