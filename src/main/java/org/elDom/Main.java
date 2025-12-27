@@ -1,6 +1,8 @@
 package org.elDom;
 
 import org.elDom.configuration.SessionFactoryUtil;
+import org.elDom.dao.BuildingDao;
+import org.elDom.dao.BuildingDaoHibernate;
 import org.elDom.dao.PaymentDao;
 import org.elDom.dao.PaymentDaoHibernate;
 import org.elDom.entity.*;
@@ -10,6 +12,7 @@ import org.hibernate.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.elDom.configuration.SessionFactoryUtil.*;
 
@@ -228,6 +231,18 @@ public class Main {
 
             BigDecimal income = paymentDao.sumByCompany(1L, 2025, 12);
             System.out.println("Company income = " + income);
+
+            BuildingDao buildingDao = new BuildingDaoHibernate(sf);
+
+            List<Apartment> apartments = buildingDao.findApartmentsByBuilding(1L);
+            List<Resident> residents = buildingDao.findResidentsByBuilding(1L);
+
+            List<Building> buildingsOfEmployee = buildingDao.findBuildingsByEmployee(2L);
+
+            Long bestEmployeeId = buildingDao.findEmployeeIdWithMinBuildings(1L);
+            System.out.println("Min buildings employeeId = " + bestEmployeeId);
+
+
         }
 
         //session.close();
